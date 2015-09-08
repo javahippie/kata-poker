@@ -36,16 +36,43 @@
 (defn higher-card
   "Returns negative value if the second card is higher, 0 when they are equal and positive value if the first card is higher."
   [card-1 card-2]
-  (let [value-1 ((card-to-keyword card-1) card-order)
-        value-2 ((card-to-keyword card-2) card-order)]
+  (let [value-1 ((card-to-value card-1) card-order)
+        value-2 ((card-to-value card-2) card-order)]
     (compare value-1 value-2)))
+
+(defn pair?
+  [hand]
+  (let [values (map card-to-value hand)]
+    (not (empty? (filter #(< 1 (last %)) (frequencies values))))))
+
+(defn two-pairs?
+  [hand]
+  )
+
+(defn three-of-a-kind?
+  [hand]
+  )
+
+(defn straight?
+  [hand]
+  )
+
+(defn flush?
+  [hand]
+  true)
+
+(defn full-house?
+  [hand]
+  )
+
+(defn four-of-a-kind?
+  [hand]
+  )
 
 (defn straight-flush?
  [hand]
   (let [values (map card-to-value hand)
         suits (map card-to-suite hand)]
-  ()))
-
-(reduce = (map card-to-suite '("2H" "3D" "5S" "9C" "KD")))
+  (and (flush? hand) (apply = suits))))
 
 
