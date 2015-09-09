@@ -57,11 +57,12 @@
 
 (defn straight?
   [hand]
-  (let [sorted-hand (sort hand)
-        startval (first sorted-hand)]
-    (= sorted-hand
-       (range startval (+ startval 5)))))
-
+  (let [values (map #((card-to-value %) card-order) hand)
+        sorted-values (sort values)
+        startval (first sorted-values)]
+    (= sorted-values
+       (range startval
+              (+ startval 5)))))
 
 (defn flush?
   [hand]
