@@ -56,7 +56,12 @@
     (not (empty? (filter #(< 2 (last %)) (frequencies values))))))
 
 (defn straight?
-  [hand])
+  [hand]
+  (let [sorted-hand (sort hand)
+        startval (first sorted-hand)]
+    (= sorted-hand
+       (range startval (+ startval 5)))))
+
 
 (defn flush?
   [hand]
@@ -65,7 +70,6 @@
 
 (defn full-house?
   [hand])
-
 
 (defn four-of-a-kind?
   [hand]
@@ -78,13 +82,3 @@
  [hand]
   (and (flush? hand)
        (straight? hand)))
-
-
-(def hand '(3 2 4 5 7 6))
-
-
-(sort hand)
-
-
-
-
