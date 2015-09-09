@@ -1,29 +1,29 @@
 (ns kata-poker.core
   (:gen-class))
 
-(def card-order {:2 0
-                 :3 1
-                 :4 2
-                 :5 3
-                 :6 4
-                 :7 5
-                 :8 6
-                 :9 7
-                 :T 8
-                 :J 9
-                 :Q 10
-                 :K 11
-                 :A 12})
+(def card-order {:2 1
+                 :3 2
+                 :4 3
+                 :5 4
+                 :6 5
+                 :7 6
+                 :8 7
+                 :9 8
+                 :T 9
+                 :J 10
+                 :Q 11
+                 :K 12
+                 :A 13})
 
-(def hand-order {:high-card 0
-                 :pair 1
-                 :two-pairs 2
-                 :three-of-a-kind 3
-                 :straight 4
-                 :flush 5
-                 :full-house 6
-                 :four-of-a-kind 7
-                 :straight-flush 8})
+(def hand-order {:high-card 1000
+                 :pair 2000
+                 :two-pairs 3000
+                 :three-of-a-kind 4000
+                 :straight 5000
+                 :flush 6000
+                 :full-house 7000
+                 :four-of-a-kind 8000
+                 :straight-flush 9000})
 
 (defn card-to-value
   [card]
@@ -47,32 +47,44 @@
 
 (defn two-pairs?
   [hand]
-  )
+ (let [values (map card-to-value hand)]
+    (< 1 (count (filter #(< 1 (last %)) (frequencies values))))))
 
 (defn three-of-a-kind?
   [hand]
-  )
+  (let [values (map card-to-value hand)]
+    (not (empty? (filter #(< 2 (last %)) (frequencies values))))))
 
 (defn straight?
-  [hand]
-  )
+  [hand])
 
 (defn flush?
   [hand]
-  true)
+ (let [suits (map card-to-suite hand)]
+    (apply = suits)))
 
 (defn full-house?
-  [hand]
-  )
+  [hand])
+
 
 (defn four-of-a-kind?
   [hand]
-  )
+  (let [values (map card-to-value hand)]
+    (not (empty?
+          (filter #(< 3 (last %))
+                  (frequencies values))))))
 
 (defn straight-flush?
  [hand]
-  (let [values (map card-to-value hand)
-        suits (map card-to-suite hand)]
-  (and (flush? hand) (apply = suits))))
+  (and (flush? hand)
+       (straight? hand)))
+
+
+(def hand '(3 2 4 5 7 6))
+
+
+(sort hand)
+
+
 
 
