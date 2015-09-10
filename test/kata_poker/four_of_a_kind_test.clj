@@ -1,6 +1,6 @@
 (ns kata-poker.four-of-a-kind-test
   (:require [clojure.test :refer :all]
-            [kata-poker.core :refer :all]))
+            [kata-poker.card-comparator :refer :all]))
 
 (deftest test-four-of-a-kind-correct
   (testing "Checking, if a hand contais a quadruple"

@@ -1,6 +1,6 @@
 (ns kata-poker.two-pairs-test
   (:require [clojure.test :refer :all]
-            [kata-poker.core :refer :all]))
+            [kata-poker.card-comparator :refer :all]))
 
 (deftest test-two-pairs-correct
   (testing "Checking, if a hand contais two pairs"

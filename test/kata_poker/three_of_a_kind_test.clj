@@ -1,6 +1,6 @@
 (ns kata-poker.three-of-a-kind-test
   (:require [clojure.test :refer :all]
-            [kata-poker.core :refer :all]))
+            [kata-poker.card-comparator :refer :all]))
 
 (deftest test-three-of-a-kind-correct
   (testing "Checking, if a hand contais a triplet"
