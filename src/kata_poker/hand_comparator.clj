@@ -46,6 +46,14 @@
    (compare (highest-tuple-value black 3)
             (highest-tuple-value white 3)))
 
+(defn by-straight
+  [black white]
+  (let [black-straight? (cards/straight? black)
+        white-straight? (cards/straight? white)]
+    (if (= black-straight? white-straight?)
+      (by-high-card black white)
+      (if black-straight? 1 -1))))
+
 (defn by-quadruple
   "Compares both hands regarding by who has got the higher quadruple"
   [black white]
