@@ -30,6 +30,10 @@
     (= sorted-values
        (range startval
               (+ startval 5)))))
+(defn flush?
+  [hand]
+ (let [suits (map cards/card-to-suite hand)]
+    (apply = suits)))
 
 (defn by-pair
   "Compares both hands regarding by who has got the higher pair"
@@ -62,6 +66,22 @@
     (if (= black-straight? white-straight?)
       (by-high-card black white)
       (if black-straight? 1 -1))))
+
+(defn by-flush
+  [black white]
+  (let [black-flush? (flush? black)
+        white-flush? (flush? white)]
+    (if (= black-flush? white-flush?)
+      (by-high-card black white)
+      (if black-flush? 1 -1))))
+
+(defn by-full-house
+  [black white]
+  (let [black-fh? (cards/full-house? black)
+        white-fh? (cards/full-house? white)]
+  (if (= black-fh? white-fh?)
+    (by-triplet black white)
+    (if black-fh? 1 -1))))
 
 (defn by-quadruple
   "Compares both hands regarding by who has got the higher quadruple"

@@ -44,11 +44,6 @@
         value-2 ((card-to-value card-2) card-order)]
     (compare value-1 value-2)))
 
-(defn flush?
-  [hand]
- (let [suits (map card-to-suite hand)]
-    (apply = suits)))
-
 (defn full-house?
   [hand]
   (let [values (map card-to-value hand)]
