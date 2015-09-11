@@ -44,15 +44,6 @@
         value-2 ((card-to-value card-2) card-order)]
     (compare value-1 value-2)))
 
-(defn straight?
-  [hand]
-  (let [values (hand-to-values hand)
-        sorted-values (sort values)
-        startval (first sorted-values)]
-    (= sorted-values
-       (range startval
-              (+ startval 5)))))
-
 (defn flush?
   [hand]
  (let [suits (map card-to-suite hand)]
@@ -63,7 +54,7 @@
   (let [values (map card-to-value hand)]
     (= 5 (reduce + (filter #(or (= 3 %) (= 2 %)) (map last (frequencies values)))))))
 
-(defn straight-flush?
+'(defn straight-flush?
  [hand]
   (and (flush? hand)
        (straight? hand)))

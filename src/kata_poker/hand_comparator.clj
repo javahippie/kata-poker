@@ -22,6 +22,15 @@
                (filter #(= 2 (count (last %)))
                        (group-by #((cards/card-to-value %) cards/card-order) hand)))))
 
+(defn straight?
+  [hand]
+  (let [values (cards/hand-to-values hand)
+        sorted-values (sort values)
+        startval (first sorted-values)]
+    (= sorted-values
+       (range startval
+              (+ startval 5)))))
+
 (defn by-pair
   "Compares both hands regarding by who has got the higher pair"
   [black white]
@@ -48,8 +57,8 @@
 
 (defn by-straight
   [black white]
-  (let [black-straight? (cards/straight? black)
-        white-straight? (cards/straight? white)]
+  (let [black-straight? (straight? black)
+        white-straight? (straight? white)]
     (if (= black-straight? white-straight?)
       (by-high-card black white)
       (if black-straight? 1 -1))))
