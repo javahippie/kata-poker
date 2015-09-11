@@ -43,13 +43,3 @@
   (let [value-1 ((card-to-value card-1) card-order)
         value-2 ((card-to-value card-2) card-order)]
     (compare value-1 value-2)))
-
-(defn full-house?
-  [hand]
-  (let [values (map card-to-value hand)]
-    (= 5 (reduce + (filter #(or (= 3 %) (= 2 %)) (map last (frequencies values)))))))
-
-'(defn straight-flush?
- [hand]
-  (and (flush? hand)
-       (straight? hand)))

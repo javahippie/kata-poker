@@ -35,6 +35,16 @@
  (let [suits (map cards/card-to-suite hand)]
     (apply = suits)))
 
+(defn full-house?
+  [hand]
+  (let [values (map cards/card-to-value hand)]
+    (= 5 (reduce + (filter #(or (= 3 %) (= 2 %)) (map last (frequencies values)))))))
+
+(defn straight-flush?
+ [hand]
+  (and (flush? hand)
+       (straight? hand)))
+
 (defn by-pair
   "Compares both hands regarding by who has got the higher pair"
   [black white]
@@ -77,8 +87,8 @@
 
 (defn by-full-house
   [black white]
-  (let [black-fh? (cards/full-house? black)
-        white-fh? (cards/full-house? white)]
+  (let [black-fh? (full-house? black)
+        white-fh? (full-house? white)]
   (if (= black-fh? white-fh?)
     (by-triplet black white)
     (if black-fh? 1 -1))))
@@ -88,3 +98,11 @@
   [black white]
    (compare (highest-tuple-value black 4)
             (highest-tuple-value white 4)))
+
+(defn by-straight-flush
+  [black white]
+  (let [black-sf? (straight-flush? black)
+        white-sf? (straight-flush? white)]
+    (if (= black-sf? white-sf?)
+      (by-high-card black white)
+      (if black-sf? 1 -1))))
