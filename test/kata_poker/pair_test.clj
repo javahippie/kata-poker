@@ -9,7 +9,7 @@
     (is result))))
 
 (deftest test-pair-correct-with-triple
-  (testing "Checking, if a hand contais a pair whit the 'pair' really being a triplet"
+  (testing "Checking, if a hand contais a pair with the 'pair' really being a triplet"
     (let [hand '("2E" "2D" "3S" "4E" "2S")
           result (pair? hand)]
     (is (not result)))))
