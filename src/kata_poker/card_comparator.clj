@@ -44,11 +44,6 @@
         value-2 ((card-to-value card-2) card-order)]
     (compare value-1 value-2)))
 
-(defn two-pairs?
-  [hand]
- (let [values (map card-to-value hand)]
-    (< 1 (count (filter #(< 1 (last %)) (frequencies values))))))
-
 (defn straight?
   [hand]
   (let [values (hand-to-values hand)
