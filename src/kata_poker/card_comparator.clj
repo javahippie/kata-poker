@@ -44,21 +44,10 @@
         value-2 ((card-to-value card-2) card-order)]
     (compare value-1 value-2)))
 
-(defn pair?
-  [hand]
-  (let [pairs (group-by #((card-to-value %) card-order) hand)]
-    (not (empty? (filter #(= 2 (count (last %1))) pairs)))))
-
-
 (defn two-pairs?
   [hand]
  (let [values (map card-to-value hand)]
     (< 1 (count (filter #(< 1 (last %)) (frequencies values))))))
-
-(defn three-of-a-kind?
-  [hand]
-  (let [values (map card-to-value hand)]
-    (not (empty? (filter #(< 2 (last %)) (frequencies values))))))
 
 (defn straight?
   [hand]
@@ -78,13 +67,6 @@
   [hand]
   (let [values (map card-to-value hand)]
     (= 5 (reduce + (filter #(or (= 3 %) (= 2 %)) (map last (frequencies values)))))))
-
-(defn four-of-a-kind?
-  [hand]
-  (let [values (map card-to-value hand)]
-    (not (empty?
-          (filter #(< 3 (last %))
-                  (frequencies values))))))
 
 (defn straight-flush?
  [hand]
