@@ -46,8 +46,9 @@
 
 (defn pair?
   [hand]
-  (let [values (map card-to-value hand)]
-    (not (empty? (filter #(< 1 (last %)) (frequencies values))))))
+  (let [pairs (group-by #((card-to-value %) card-order) hand)]
+    (not (empty? (filter #(= 2 (count (last %1))) pairs)))))
+
 
 (defn two-pairs?
   [hand]

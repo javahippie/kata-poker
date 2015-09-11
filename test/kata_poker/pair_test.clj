@@ -12,7 +12,7 @@
   (testing "Checking, if a hand contais a pair whit the 'pair' really being a triplet"
     (let [hand '("2E" "2D" "3S" "4E" "2S")
           result (pair? hand)]
-    (is result))))
+    (is (not result)))))
 
 (deftest test-pair-correct-non-consecutive
   (testing "Checking, if a hand contais a pair with the pair not being consecutive"
