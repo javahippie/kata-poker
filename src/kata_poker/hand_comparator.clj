@@ -17,10 +17,12 @@
 
 (defn highest-dual-pair-values
   [hand]
+  (let [pairs-combined
   (reduce concat
           (map last
                (filter #(= 2 (count (last %)))
-                       (group-by #((cards/card-to-value %) cards/card-order) hand)))))
+                       (group-by #((cards/card-to-value %) cards/card-order) hand))))]
+    (if (= (count pairs-combined) 4) pairs-combined '())))
 
 (defn straight?
   [hand]
@@ -61,7 +63,9 @@
         compare-result (by-high-card black-values white-values)]
       (if (not= 0 compare-result)
         compare-result
-        (by-high-card black white))))
+        (if (empty? black-values) 0 (by-high-card black white)))))
+
+
 
 (defn by-triplet
   "Compares both hands regarding by who has got the higher triplet"
@@ -73,25 +77,25 @@
   [black white]
   (let [black-straight? (straight? black)
         white-straight? (straight? white)]
-    (if (= black-straight? white-straight?)
+    (if (and black-straight? white-straight?)
       (by-high-card black white)
-      (if black-straight? 1 -1))))
+      (if black-straight? 1 (if white-straight? -1 0)))))
 
 (defn by-flush
   [black white]
   (let [black-flush? (flush? black)
         white-flush? (flush? white)]
-    (if (= black-flush? white-flush?)
+    (if (and black-flush? white-flush?)
       (by-high-card black white)
-      (if black-flush? 1 -1))))
+      (if black-flush? 1 (if white-flush? -1 0)))))
 
 (defn by-full-house
   [black white]
   (let [black-fh? (full-house? black)
         white-fh? (full-house? white)]
-  (if (= black-fh? white-fh?)
+  (if (and black-fh? white-fh?)
     (by-triplet black white)
-    (if black-fh? 1 -1))))
+    (if black-fh? 1 (if white-fh? -1 0)))))
 
 (defn by-quadruple
   "Compares both hands regarding by who has got the higher quadruple"
@@ -103,6 +107,19 @@
   [black white]
   (let [black-sf? (straight-flush? black)
         white-sf? (straight-flush? white)]
-    (if (= black-sf? white-sf?)
+    (if (and black-sf? white-sf?)
       (by-high-card black white)
-      (if black-sf? 1 -1))))
+      (if black-sf? 1 (if white-sf? -1 0)))))
+
+(defn compare-hands
+  [black white]
+  (let [functions (lazy-seq [by-straight-flush
+    by-quadruple
+    by-full-house
+    by-flush
+    by-straight
+    by-triplet
+    by-two-pairs
+    by-pair
+    by-high-card])]
+    (first (drop-while #(= 0 %) (map #(% black white) functions)))))

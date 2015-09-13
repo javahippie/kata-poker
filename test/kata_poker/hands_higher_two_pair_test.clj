@@ -37,4 +37,11 @@
           result (by-two-pairs black white)]
     (is (zero? result)))))
 
+(deftest test-higher-two-pairs-tie-single-pair
+  (testing "Comparing two hands by higher card"
+    (let [black '("2H" "3D" "9S" "9C" "KD")
+          white '("2D" "3H" "8C" "8S" "KH")
+          result (by-two-pairs black white)]
+    (is (zero? result)))))
+
 
