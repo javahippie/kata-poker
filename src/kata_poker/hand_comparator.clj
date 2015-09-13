@@ -1,6 +1,7 @@
 (ns kata-poker.hand-comparator
   (:gen-class)
-  (:require [kata-poker.card-comparator :as cards]))
+  (:require [kata-poker.card-comparator :as cards]
+            [kata-poker.hand-util :refer :all]))
 
 (defn by-high-card
   "Compares both hands regarding by who has got the higher card"
@@ -11,42 +12,6 @@
      (compare (first  first-non-matching)
               (second first-non-matching))))
 
-(defn highest-tuple-value
-  [hand tuple]
-  (first (last (filter #(= tuple (count (last %))) (group-by #((cards/card-to-value %) cards/card-order) hand)))))
-
-(defn highest-dual-pair-values
-  [hand]
-  (let [pairs-combined
-  (reduce concat
-          (map last
-               (filter #(= 2 (count (last %)))
-                       (group-by #((cards/card-to-value %) cards/card-order) hand))))]
-    (if (= (count pairs-combined) 4) pairs-combined '())))
-
-(defn straight?
-  [hand]
-  (let [values (cards/hand-to-values hand)
-        sorted-values (sort values)
-        startval (first sorted-values)]
-    (= sorted-values
-       (range startval
-              (+ startval 5)))))
-(defn flush?
-  [hand]
- (let [suits (map cards/card-to-suite hand)]
-    (apply = suits)))
-
-(defn full-house?
-  [hand]
-  (let [values (map cards/card-to-value hand)]
-    (= 5 (reduce + (filter #(or (= 3 %) (= 2 %)) (map last (frequencies values)))))))
-
-(defn straight-flush?
- [hand]
-  (and (flush? hand)
-       (straight? hand)))
-
 (defn by-pair
   "Compares both hands regarding by who has got the higher pair"
   [black white]
@@ -56,7 +21,9 @@
       higher-value)
       (by-high-card black white)))
 
+
 (defn by-two-pairs
+  "Compares both hands by the 'two pair' rule"
   [black white]
   (let [black-values (highest-dual-pair-values black)
         white-values (highest-dual-pair-values white)
@@ -66,7 +33,6 @@
         (if (empty? black-values) 0 (by-high-card black white)))))
 
 
-
 (defn by-triplet
   "Compares both hands regarding by who has got the higher triplet"
   [black white]
@@ -74,6 +40,7 @@
             (highest-tuple-value white 3)))
 
 (defn by-straight
+  "Compares both hands by the 'straight' rule"
   [black white]
   (let [black-straight? (straight? black)
         white-straight? (straight? white)]
@@ -82,6 +49,7 @@
       (if black-straight? 1 (if white-straight? -1 0)))))
 
 (defn by-flush
+  "Compares both hands by the 'flush' rule"
   [black white]
   (let [black-flush? (flush? black)
         white-flush? (flush? white)]
@@ -90,6 +58,7 @@
       (if black-flush? 1 (if white-flush? -1 0)))))
 
 (defn by-full-house
+  "Compares both hands by the 'full house' rule"
   [black white]
   (let [black-fh? (full-house? black)
         white-fh? (full-house? white)]
@@ -104,6 +73,7 @@
             (highest-tuple-value white 4)))
 
 (defn by-straight-flush
+  "Compares both hands by the 'straight flush' rule"
   [black white]
   (let [black-sf? (straight-flush? black)
         white-sf? (straight-flush? white)]
@@ -112,6 +82,7 @@
       (if black-sf? 1 (if white-sf? -1 0)))))
 
 (defn compare-hands
+  "Iterates through all defined rules until one hand wins one of them"
   [black white]
   (let [functions (lazy-seq [by-straight-flush
     by-quadruple

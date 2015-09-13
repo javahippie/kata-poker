@@ -16,11 +16,9 @@
           result (by-high-card black white)]
     (is (neg? result)))))
 
-(deftest test-higher-cards-white-wins
+(deftest test-higher-cards-tie
   (testing "Comparing two hands by higher card"
     (let [black '("2H" "3D" "5S" "9C" "KD")
           white '("2D" "3H" "5C" "9S" "KH")
           result (by-high-card black white)]
     (is (zero? result)))))
-
-
