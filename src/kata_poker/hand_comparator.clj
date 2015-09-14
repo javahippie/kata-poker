@@ -18,8 +18,8 @@
   (let [higher-value  (compare (highest-tuple-value black 2)
                                (highest-tuple-value white 2))]
     (if (not= 0 higher-value)
-      higher-value)
-      (by-high-card black white)))
+      higher-value
+      (by-high-card black white))))
 
 
 (defn by-two-pairs
