@@ -84,13 +84,13 @@
 (defn compare-hands
   "Iterates through all defined rules until one hand wins one of them"
   [black white]
-  (let [functions (lazy-seq [by-straight-flush
-    by-quadruple
-    by-full-house
-    by-flush
-    by-straight
-    by-triplet
-    by-two-pairs
-    by-pair
-    by-high-card])]
-    (first (drop-while #(= 0 %) (map #(% black white) functions)))))
+  (let [winner (first (drop-while #(= 0 %) (map #(% black white) [by-straight-flush
+                             by-quadruple
+                             by-full-house
+                             by-flush
+                             by-straight
+                             by-triplet
+                             by-two-pairs
+                             by-pair
+                             by-high-card])))]
+    (if (nil? winner) 0 winner)))
