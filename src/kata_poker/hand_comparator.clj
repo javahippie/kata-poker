@@ -84,13 +84,15 @@
 (defn compare-hands
   "Iterates through all defined rules until one hand wins one of them"
   [black white]
-  (let [winner (first (drop-while #(= 0 %) (map #(% black white) [by-straight-flush
-                             by-quadruple
-                             by-full-house
-                             by-flush
-                             by-straight
-                             by-triplet
-                             by-two-pairs
-                             by-pair
-                             by-high-card])))]
+  (let [winner (first (drop-while #(= 0 %) (map #((:func %) black white) [{:func by-straight-flush :text "Straight flush!"}
+                             {:func by-quadruple :text "4 of a kind!"}
+                             {:func by-full-house :text "Full house!"}
+                             {:func by-flush :text "Flush!"}
+                             {:func by-straight :text "Straight!"}
+                             {:func by-triplet :text "Three of a kind!"}
+                             {:func by-two-pairs :text "Two pairs!"}
+                             {:func by-pair :text "Pair!"}
+                             {:func by-high-card :text "Higher card!"}])))]
     (if (nil? winner) 0 winner)))
+
+(compare-hands '("2A" "3A" "4A" "5A" "6A") '("3D" "4D" "5D" "6D" "7D"))
